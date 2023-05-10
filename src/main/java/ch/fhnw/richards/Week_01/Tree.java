@@ -29,12 +29,12 @@ public class Tree<T> {
 	public Tree() {
 	}
 
-	/** Tree-specific operation: what data is at the root? */
+	/** What data is at the root? */
 	public T getRoot() {
 		return root;
 	}
 
-	/** Tree-specific operation: set the root of the tree */
+	/** Set the root of the tree. Only allowed if the root is null. */
 	public boolean setRoot(T data) {
 		boolean success = (data != null && root == null);
 		if (success) {
@@ -45,7 +45,7 @@ public class Tree<T> {
 	}
 
 	/**
-	 * Tree-specific operation: what are the children of the node containing this
+	 * What are the children of the node containing this
 	 * data? Returns null, if there is no such node. Returns an empty list, if the
 	 * node exists, but has no children
 	 */
@@ -54,7 +54,7 @@ public class Tree<T> {
 	}
 
 	/**
-	 * Tree-specific operation: add child to a node. Returns true if successful.
+	 * Add child to a node. Returns true if successful.
 	 * Returns false if: (1) No such parent-node exists, (2) the new child is null,
 	 * (3) the new child already exists in the tree
 	 */
@@ -73,7 +73,7 @@ public class Tree<T> {
 	}
 
 	/**
-	 * Tree-specific operation: remove node from the tree. Note that removing a node
+	 * Remove node from the tree. Note that removing a node
 	 * also removes all of its descendents! Returns true if the node exists. Returns
 	 * false if the node does not exist or if the parameter is null.
 	 */
@@ -112,8 +112,8 @@ public class Tree<T> {
 	}
 
 	/**
-	 * We really ought to implement a tree-based iterator (preorder or postorder).
-	 * For the moment, we are lazy and just pass on an iterator directly on our internal HashMap
+	 * We really ought to implement a tree-oriented iterator (preorder or postorder).
+	 * For the moment, we just pass on an iterator directly on our internal HashMap
 	 */	
 	public Iterator<T> iterator() {
 		return allData.keySet().iterator();

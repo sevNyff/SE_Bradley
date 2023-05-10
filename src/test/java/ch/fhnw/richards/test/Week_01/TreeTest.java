@@ -36,7 +36,16 @@ class TreeTest {
             family.addChild("bonny", "kristie");
         }
 
-        @Test
+    /**
+     * A quick'n'dirty test of the Tree class.
+     *
+     * A more disciplined approach would include a test method that targets each aspect.
+     * For example: One method to test adding children: are they added in the right place?
+     * Are they rejected if duplicates?
+     *
+     * This test method is more "all in one", but it does test many aspects of the class.
+     */
+    @Test
         public void TreeTest1() {
             assertEquals(21, family.size());
             List<String> gkids = family.getChildren("genevieve");
@@ -46,10 +55,11 @@ class TreeTest {
             assertTrue(gkids.contains("bobby"));
             assertTrue(family.removeNode("genevieve"));
             assertFalse(family.contains("bobby"));
-            assertEquals(17, family.size());
             assertEquals("anna", family.getRoot());
             assertFalse(family.isEmpty());
             assertFalse(family.setRoot("fred"));
+            assertEquals(17, family.size());
             assertTrue(family.addChild("brad", "tynan"));
+            assertEquals(18, family.size());
         }
 }
