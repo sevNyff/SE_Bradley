@@ -1,9 +1,9 @@
-package ch.fhnw.richards.topic20_Streams.painter_example;
+package ch.fhnw.richards.Week_02.Streams.painter_example;
 
 import java.util.Arrays;
 import java.util.List;
 
-import ch.fhnw.richards.topic20_Streams.painter_example.Painter.Gender;
+import ch.fhnw.richards.Week_02.Streams.painter_example.Painter.Gender;
 
 /**
  * This class contains a list of famous painters,

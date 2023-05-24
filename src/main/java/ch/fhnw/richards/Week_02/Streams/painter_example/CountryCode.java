@@ -1,4 +1,4 @@
-package ch.fhnw.richards.topic20_Streams.painter_example;
+package ch.fhnw.richards.Week_02.Streams.painter_example;
 
 public enum CountryCode {
 	AT("Austria"),
