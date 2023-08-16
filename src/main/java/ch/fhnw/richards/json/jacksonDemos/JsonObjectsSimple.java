@@ -1,5 +1,6 @@
-package ch.fhnw.richards.jacksonDemos;
+package ch.fhnw.richards.json.jacksonDemos;
 
+import ch.fhnw.richards.json.dataClasses.Person;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

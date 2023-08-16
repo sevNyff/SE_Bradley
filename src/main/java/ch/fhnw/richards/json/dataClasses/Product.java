@@ -1,4 +1,4 @@
-package ch.fhnw.richards.jacksonDemos;
+package ch.fhnw.richards.json.dataClasses;
 
 public abstract class Product {
     protected int id;

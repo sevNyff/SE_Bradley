@@ -1,4 +1,4 @@
-package ch.fhnw.richards.jacksonDemos;
+package ch.fhnw.richards.json.dataClasses;
 
 public class ClothesProduct extends Product {
     public static enum Size { S, M, L, XL }

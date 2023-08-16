@@ -7,8 +7,11 @@ module ch.fhnw.richards {
     // Necessary for Jackson parsing
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
-    exports ch.fhnw.richards.jacksonDemos to com.fasterxml.jackson.databind;
-    opens ch.fhnw.richards.jacksonDemos to com.fasterxml.jackson.databind;
+    requires org.json;
+    exports ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
+    opens ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
+    exports ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
+    opens ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
 
     // Necessary for any JavaFX programs that should be directly runnable
     exports ch.fhnw.richards.demo;
