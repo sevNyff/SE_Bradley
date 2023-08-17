@@ -29,7 +29,7 @@ public class DepthFirst_EdgeList {
             // Nothing to do...
         } else { // Recursive case - add an edge to the path
             for (char[] edge : edgeList) {
-                if (edge[0] == current && !haveNotBeenThere(path, edge[1])) {
+                if (edge[0] == current && !haveBeenThere(path, edge[1])) {
                     path.add(edge);
                     depthFirstRecursive(path, edge[1], end);
                     // If we have a solution, stop the loop!
@@ -43,7 +43,7 @@ public class DepthFirst_EdgeList {
         return path;
     }
 
-    private static boolean haveNotBeenThere(ArrayList<char[]> path, char where) {
+    private static boolean haveBeenThere(ArrayList<char[]> path, char where) {
         boolean found = false;
         for (char[] edge : path) {
             found = found || edge[0] == where || edge[1] == where;

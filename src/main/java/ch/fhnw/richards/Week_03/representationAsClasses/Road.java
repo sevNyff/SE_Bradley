@@ -1,4 +1,4 @@
-package ch.fhnw.richards.Week_03.representations;
+package ch.fhnw.richards.Week_03.representationAsClasses;
 
 public class Road {
     private String name;
