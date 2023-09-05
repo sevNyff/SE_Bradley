@@ -8,6 +8,10 @@ module ch.fhnw.richards {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires org.json;
+    requires java.logging;
+    requires jdk.httpserver;
+    requires java.net.http;
+    requires java.sql;
     exports ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
     opens ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
     exports ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
@@ -20,4 +24,5 @@ module ch.fhnw.richards {
     exports ch.fhnw.richards.Week_02.Lambdas;
     exports ch.fhnw.richards.Week_02.Streams.loginRecord_example;
     exports ch.fhnw.richards.Week_02.Streams.transaction_exercise;
+    exports ch.fhnw.richards.Week_05;
 }
