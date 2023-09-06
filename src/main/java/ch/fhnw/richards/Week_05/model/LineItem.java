@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LineItem {
-    private Integer invoiceID;
-    private Integer productID;
+    private final Integer invoiceID;
+    private final Integer productID;
     private Integer quantity;
     private Integer salesPrice;
 
@@ -40,16 +40,16 @@ public class LineItem {
         List<LineItem> lineItems = new ArrayList<>();
         String query = "SELECT * FROM LineItem WHERE invoiceID = ? ORDER BY productID";
         try (
-                PreparedStatement stmt = db.getConnection().prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+                PreparedStatement stmt = db.getConnection().prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY)
         ) {
             stmt.setInt(1, customerID); // Must be outside of try(...) - hence the nested try-with-resources
-            try(ResultSet rs = stmt.executeQuery();) {
+            try(ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     lineItems.add(new LineItem(rs));
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Exception " + e.toString());
+            System.out.println("Exception " + e);
         }
         return lineItems;
     }

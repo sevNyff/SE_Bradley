@@ -1,13 +1,9 @@
 package ch.fhnw.richards.Week_05;
 
-import ch.fhnw.richards.Week_05.Controller.InvoiceController;
-import ch.fhnw.richards.Week_05.model.Database;
+import ch.fhnw.richards.Week_05.controller.Controller;
 import ch.fhnw.richards.Week_05.model.Model;
-import ch.fhnw.richards.Week_05.view.InvoiceView;
+import ch.fhnw.richards.Week_05.view.View;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -15,8 +11,8 @@ import javafx.stage.Stage;
  */
 public class InvoiceExample extends Application {
     private Model model;
-    private InvoiceView view;
-    private InvoiceController controller;
+    private View view;
+    private Controller controller;
 
     public static void main(String[] args) {
         launch();
@@ -25,8 +21,8 @@ public class InvoiceExample extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.model = new Model();
-        this.view = new InvoiceView(model, stage);
-        this.controller = new InvoiceController(model, view);
+        this.view = new View(model, stage);
+        this.controller = new Controller(model, view);
 
         view.start();
     }

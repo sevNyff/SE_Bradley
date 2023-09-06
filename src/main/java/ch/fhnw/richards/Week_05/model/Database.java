@@ -22,7 +22,7 @@ public class Database {
     public void closeConnection() {
         try {
             cn.close();
-        } catch (SQLException e) {
+        } catch (SQLException ignored) {
         }
         cn = null;
     }

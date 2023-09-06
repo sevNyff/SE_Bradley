@@ -8,11 +8,10 @@ import java.util.List;
  * and the detailed information on one invoice (including all line items).
  */
 public class Model {
-    private Database db = new Database();
-    private ResultSet rs; // Used to hold query results
-    private List<Product> products;
-    private List<Customer> customers;
-    private List<Invoice> invoices;
+    private final Database db = new Database();
+    private final List<Product> products;
+    private final List<Customer> customers;
+    private final List<Invoice> invoices;
 
     public Model() {
         db.createDatabase(); // Always recreate fresh data
@@ -23,5 +22,26 @@ public class Model {
 
     public void stop() {
         db.closeConnection();
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public String getProductNameByID(Integer ID) {
+        for (Product p : products) {
+            if (p.getID().equals(ID)) {
+                return p.getName();
+            }
+        }
+        return null;
     }
 }

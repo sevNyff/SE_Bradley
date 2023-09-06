@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
-    private Integer ID;
+    private final Integer ID;
     private String name;
     private Integer price;
 
@@ -38,14 +38,14 @@ public class Product {
         String query = "SELECT * FROM Product ORDER BY ID";
         try (
                 PreparedStatement stmt = db.getConnection().prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery()
         ) {
             while (rs.next()) {
                 products.add(new Product(rs));
             }
 
         } catch (SQLException e) {
-            System.out.println("Exception " + e.toString());
+            System.out.println("Exception " + e);
         }
         return products;
     }

@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Customer {
-    private Integer ID;
+    private final Integer ID;
     private String name;
     private String email;
-    private ArrayList<Integer> invoices = new ArrayList<>();
+    private final ArrayList<Integer> invoices = new ArrayList<>();
 
     public Customer(Integer ID) {
         this.ID = ID;
@@ -40,14 +40,14 @@ public class Customer {
         String query = "SELECT * FROM Customer ORDER BY ID";
         try (
                 PreparedStatement stmt = db.getConnection().prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery()
         ) {
             while (rs.next()) {
                 customers.add(new Customer(rs));
             }
 
         } catch (SQLException e) {
-            System.out.println("Exception " + e.toString());
+            System.out.println("Exception " + e);
         }
         return customers;
     }
@@ -57,10 +57,7 @@ public class Customer {
     }
 
     public void removeInvoice(Integer invoiceID) {
-        Iterator<Integer> i = invoices.iterator();
-        while (i.hasNext()) {
-            if (i.next().equals(invoiceID)) i.remove();
-        }
+        invoices.removeIf(integer -> integer.equals(invoiceID));
     }
 
     public ArrayList<Integer> getInvoices() {

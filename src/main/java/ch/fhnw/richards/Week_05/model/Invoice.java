@@ -5,11 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Invoice {
-    private Integer ID;
+    private final Integer ID;
     private LocalDate date;
     private Integer customerID;
     private List<LineItem> lineItems = new ArrayList<>();
@@ -42,33 +41,43 @@ public class Invoice {
         String query = "SELECT * FROM Invoice ORDER BY ID";
         try (
                 PreparedStatement stmt = db.getConnection().prepareStatement(query, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery()
         ) {
             while (rs.next()) {
                 Invoice invoice = new Invoice(rs);
                 invoice.lineItems = LineItem.getLineItems(db, invoice.ID);
-                invoices.add(new Invoice(rs));
+                invoice.updateTotal();
+                invoices.add(invoice);
             }
 
         } catch (SQLException e) {
-            System.out.println("Exception " + e.toString());
+            System.out.println("Exception " + e);
         }
         return invoices;
     }
 
     public void addLineItem(Integer productID, Integer quantity, Integer salesPrice) {
         lineItems.add(new LineItem(this.ID, productID, quantity, salesPrice));
+        updateTotal();
     }
 
     public void addLineItemFromProduct(Product product, Integer quantity) {
         lineItems.add(new LineItem(this.ID, product.getID(), quantity, product.getPrice()));
+        updateTotal();
     }
 
     public void removeLineItem(LineItem li) {
-        Iterator<LineItem> i = lineItems.iterator();
-        while (i.hasNext()) {
-            if (i.next().equals(li)) i.remove();
+        lineItems.removeIf(lineItem -> lineItem.equals(li));
+        updateTotal();
+    }
+
+    private void updateTotal() {
+        int total = 0;
+        for (LineItem li : lineItems) {
+            int subtotal = li.getQuantity() * li.getSalesPrice();
+            total += subtotal;
         }
+        this.total = total;
     }
 
     public ArrayList<LineItem> getLineItems() {
