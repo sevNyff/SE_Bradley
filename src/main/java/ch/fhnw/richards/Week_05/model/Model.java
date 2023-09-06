@@ -44,4 +44,8 @@ public class Model {
         }
         return null;
     }
+
+    public Database getDb() {
+        return db;
+    }
 }

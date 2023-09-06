@@ -30,6 +30,21 @@ public class Product {
         this.price = rs.getInt("price");
     }
 
+    public void save(Database db) throws SQLException {
+        String sql = "UPDATE Product SET name = ?, price = ? WHERE ID = ?";
+
+        // Create a PreparedStatement
+        PreparedStatement preparedStatement = db.getConnection().prepareStatement(sql);
+
+        // Set the parameters for the PreparedStatement
+        preparedStatement.setString(1, name);
+        preparedStatement.setInt(2, price);
+        preparedStatement.setInt(3, ID);
+
+        // Execute the update
+        preparedStatement.executeUpdate();
+    }
+
     /**
      * Method to get all products from the database
      */
