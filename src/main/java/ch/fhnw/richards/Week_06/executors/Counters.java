@@ -1,32 +1,41 @@
-package ch.fhnw.richards.Week_06;
+package ch.fhnw.richards.Week_06.executors;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
- * This program demonstrates the need for synchronization. It creates several
- * threads that communicate via a common object. Theoretically, the program
- * ought to count from 1 to 100 (each thread doing part of the work).
+ * This program uses executors to do the same counting task as "RaceCondition".
+ * It is properly synchronized, so no race-condition occurs. Note the way the
+ * threads interleave, depending on the number of processors available.
  *
  * @author Brad Richards
  *
  */
-class RaceCondition extends Thread {
+class Counters implements Runnable {
 
     public static void main(String[] args) {
-        Thread[] threads = new Thread[10];
+        int numProcessors = 4;
+        // numProcessors = Runtime.getRuntime().availableProcessors(); // For the real number available
+        System.out.printf("Working with %d processors%n", numProcessors);
+        ExecutorService executor = Executors.newFixedThreadPool(numProcessors);
+
+        Runnable[] tasks = new Runnable[10];
         CentralCounter centralCounter = new CentralCounter();
         for (int i = 0; i < 10; ++i) {
-            threads[i] = new RaceCondition("Counter-" + i, centralCounter);
+            tasks[i] = new Counters("Counter-" + i, centralCounter);
         }
-        for (Thread t : threads) {
-            t.start();
+        for (Runnable t : tasks) {
+            executor.execute(t);
         }
+        executor.shutdown();
     }
 
     // Object attributes
     private String threadName;
     private CentralCounter centralCounter;
 
-    public RaceCondition(String name, CentralCounter comm) {
-        super(name);
+    public Counters(String name, CentralCounter comm) {
         this.threadName = name;
         this.centralCounter = comm;
     }
@@ -44,7 +53,7 @@ class RaceCondition extends Thread {
             counter = 0;
         }
 
-        int increment() {
+        synchronized int increment() {
             int startValue = counter;
             int result = expensiveCalculations(startValue);
             // We finally have our result (really just ++)

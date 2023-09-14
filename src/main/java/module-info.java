@@ -26,5 +26,7 @@ module ch.fhnw.richards {
     exports ch.fhnw.richards.Week_02.Streams.transaction_exercise;
     exports ch.fhnw.richards.Week_05;
     exports ch.fhnw.richards.Week_06;
+    exports ch.fhnw.richards.Week_06.executors;
     exports ch.fhnw.richards.Week_06.solarSystem;
+    exports ch.fhnw.richards.Week_06.whac_a_mole;
 }
