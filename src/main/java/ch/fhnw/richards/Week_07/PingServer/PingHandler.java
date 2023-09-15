@@ -1,4 +1,4 @@
-package ch.fhnw.richards.WeekXX.PingServer;
+package ch.fhnw.richards.Week_07.PingServer;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

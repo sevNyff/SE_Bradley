@@ -1,4 +1,4 @@
-package ch.fhnw.richards.WeekXX.PingClient;
+package ch.fhnw.richards.Week_07.PingClient;
 
 import org.json.JSONObject;
 
