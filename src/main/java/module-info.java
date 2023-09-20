@@ -30,4 +30,5 @@ module ch.fhnw.richards {
     exports ch.fhnw.richards.Week_06.solarSystem;
     exports ch.fhnw.richards.Week_06.whac_a_mole;
     exports ch.fhnw.richards.Week_07.socketBrowser;
+    exports ch.fhnw.richards.Week_09.annotations.ORMexample;
 }
