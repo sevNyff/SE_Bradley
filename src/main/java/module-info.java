@@ -1,21 +1,23 @@
 module ch.fhnw.richards {
     // Necessary for JavaFX
     requires javafx.controls;
-    requires javafx.fxml;
-    opens ch.fhnw.richards.demo to javafx.fxml;
+    //requires javafx.fxml; // If using FXML
+    //opens ch.fhnw.richards.demo to javafx.fxml; // If using FXML
 
-    // Necessary for Jackson parsing
+    // Necessary for JSON examples
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires org.json;
-    requires java.logging;
-    requires jdk.httpserver;
-    requires java.net.http;
-    requires java.sql;
     exports ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
     opens ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
     exports ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
     opens ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
+
+    // Some other modules we use along the way
+    requires java.logging;
+    requires jdk.httpserver;
+    requires java.net.http;
+    requires java.sql;
 
     // Necessary for any JavaFX programs that should be directly runnable
     exports ch.fhnw.richards.demo;
