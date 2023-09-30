@@ -20,19 +20,30 @@ public class SBBmatrix {
 
     public static void main(String[] args) {
         initData(); // Initialize the matrix
-
-        printMatrix(matrix);
-        System.out.println();
+//        printMatrix(matrix);
+//        System.out.println();
 
         int[][] pathsLengthTwo = matrixMultiply(matrix, matrix);
-        printMatrix(pathsLengthTwo);
-        System.out.println();
+//        printMatrix(pathsLengthTwo);
+//        System.out.println();
 
         // Which cities can we reach from Zürich, with a path of *exactly* length 2?
-        // Note: ZÜrich is city number 12
+        // Note: Zürich is city number 12
+        System.out.println("Routes from Zürich with *exactly* one stop");
         for (int i = 0; i < pathsLengthTwo.length; i++) {
             if (pathsLengthTwo[12][i] > 0) System.out.println(cityNames[i]);
         }
+        System.out.println();
+
+        int[][] pathsLengthOneOrTwo = matrixAdd(matrix, pathsLengthTwo);
+
+        // Which cities can we reach from Zürich, with a path of *at most* length 2?
+        // Note: Zürich is city number 12
+        System.out.println("Routes from Zürich with *at* *most* one stop");
+        for (int i = 0; i < pathsLengthOneOrTwo.length; i++) {
+            if (pathsLengthOneOrTwo[12][i] > 0) System.out.println(cityNames[i]);
+        }
+        System.out.println();
     }
 
     /**
@@ -62,6 +73,19 @@ public class SBBmatrix {
         matrix[12][15] = 1; matrix[15][12] = 1; // Zürich-Chur
         matrix[12][16] = 1; matrix[16][12] = 1; // Zürich-St. Gallen
         matrix[13][14] = 1; matrix[14][13] = 1; // Arth-Goldau-Lugano
+    }
+
+    /**
+     * Add two matrices together: a + b
+     */
+    private static int[][] matrixAdd(int[][] a, int[][] b) {
+        int[][] result = new int[a.length][a[0].length];
+        for (int row = 0; row < result.length; row++) {
+            for (int col = 0; col < result[0].length; col++) {
+                result[row][col] = a[row][col] + b[row][col];
+            }
+        }
+        return result;
     }
 
     /**
