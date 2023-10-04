@@ -1,4 +1,4 @@
-package ch.fhnw.richards.json.dataClasses;
+package ch.fhnw.richards.Week_07.json.dataClasses;
 
 public class Person {
     // Jackson requires attributes to begin with a small letter, per Java naming conventions

@@ -1,8 +1,6 @@
-package ch.fhnw.richards.json.orgJsonDemos;
+package ch.fhnw.richards.Week_07.json.orgJsonDemos;
 
-import ch.fhnw.richards.json.dataClasses.Person;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ch.fhnw.richards.Week_07.json.dataClasses.Person;
 import org.json.JSONObject;
 
 public class JsonObjectsSimple {

@@ -1,4 +1,4 @@
-package ch.fhnw.richards.json.dataClasses;
+package ch.fhnw.richards.Week_07.json.dataClasses;
 
 import java.time.LocalDateTime;
 

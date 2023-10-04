@@ -8,10 +8,10 @@ module ch.fhnw.richards {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires org.json;
-    exports ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
-    opens ch.fhnw.richards.json.jacksonDemos to com.fasterxml.jackson.databind;
-    exports ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
-    opens ch.fhnw.richards.json.dataClasses to com.fasterxml.jackson.databind;
+    exports ch.fhnw.richards.Week_07.json.jacksonDemos to com.fasterxml.jackson.databind;
+    opens ch.fhnw.richards.Week_07.json.jacksonDemos to com.fasterxml.jackson.databind;
+    exports ch.fhnw.richards.Week_07.json.dataClasses to com.fasterxml.jackson.databind;
+    opens ch.fhnw.richards.Week_07.json.dataClasses to com.fasterxml.jackson.databind;
 
     // Some other modules we use along the way
     requires java.logging;

@@ -1,4 +1,4 @@
-package ch.fhnw.richards.json.jacksonDemos;
+package ch.fhnw.richards.Week_07.json.jacksonDemos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

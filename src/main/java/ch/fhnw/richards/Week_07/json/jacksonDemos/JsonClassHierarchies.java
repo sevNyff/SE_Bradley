@@ -1,8 +1,8 @@
-package ch.fhnw.richards.json.jacksonDemos;
+package ch.fhnw.richards.Week_07.json.jacksonDemos;
 
-import ch.fhnw.richards.json.dataClasses.ClothesProduct;
-import ch.fhnw.richards.json.dataClasses.FoodProduct;
-import ch.fhnw.richards.json.dataClasses.Product;
+import ch.fhnw.richards.Week_07.json.dataClasses.ClothesProduct;
+import ch.fhnw.richards.Week_07.json.dataClasses.FoodProduct;
+import ch.fhnw.richards.Week_07.json.dataClasses.Product;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
