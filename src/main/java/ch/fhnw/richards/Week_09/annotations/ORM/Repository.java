@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,7 +58,7 @@ public class Repository<ObjType, IdType> {
 
             String sql = "DELETE FROM " + tableName + " WHERE " + IdFieldName + " = ?";
             try (
-                    PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
+                PreparedStatement stmt = db.getConnection().prepareStatement(sql)) {
                 setParameter(stmt, IdValue, 1);
                 stmt.execute();
             }
@@ -67,7 +68,7 @@ public class Repository<ObjType, IdType> {
     }
 
     /**
-     * Return a lit containing all objects from the database table. We are only using runtime annotations,
+     * Return a list containing all objects from the database table. We are only using runtime annotations,
      * not compile-time. Since generic types are not available at runtime, we require an object as a
      * parameter, so that we can determine the data-type, and hence the database table to access.
      */
@@ -76,7 +77,7 @@ public class Repository<ObjType, IdType> {
             Class<?> c = obj.getClass();
             String tableName = getTableName(c);
 
-            // Find the ID field, so we know which object to delete
+            // Find the ID field, which is needed for the constructor
             String IdFieldName = null;
             Class<?> IdFieldType = null;
             IdType IdValue = null;
@@ -85,7 +86,6 @@ public class Repository<ObjType, IdType> {
                 if (f.getAnnotation(ID.class) != null) { // found the ID field
                     IdFieldName = f.getName();
                     IdFieldType = f.getType();
-                    IdValue = (IdType) f.get(obj);
                     break;
                 }
             }
@@ -98,7 +98,7 @@ public class Repository<ObjType, IdType> {
             ) {
                 while (rs.next()) { // Move to next record
                     // Construct new object
-                    Constructor<ObjType> constructor = (Constructor<ObjType>) obj.getClass().getConstructor(IdValue.getClass());
+                    Constructor<ObjType> constructor = (Constructor<ObjType>) c.getConstructor(IdFieldType);
                     IdValue = (IdType) getFieldValue(rs, IdFieldType, IdFieldName);
                     ObjType newObj = (ObjType) constructor.newInstance(IdValue);
 
@@ -108,7 +108,16 @@ public class Repository<ObjType, IdType> {
                             String fieldName = f.getName();
                             Class<?> fieldType = f.getType();
                             Object fieldValue = getFieldValue(rs, fieldType, fieldName);
-                            f.set(newObj, fieldValue); // Really should call setter-method
+                            f.set(newObj, fieldValue);
+                        } else if (f.getAnnotation(ElementCollection.class) != null) {
+                            // Embedded collection, need to fill with objects
+                            CollectionTable collectionInfo = f.getAnnotation(CollectionTable.class);
+                            String subTableName = collectionInfo.name();
+                            String joinColumn = collectionInfo.joinColumn();
+                            Collection collection = (Collection) f.get(newObj); // Must be a collection!
+                            String packageName = obj.getClass().getPackageName();
+                            loadElementCollection(collection, packageName, subTableName, joinColumn, IdValue);
+                            System.out.println("here");
                         }
                     }
                     items.add(newObj);
@@ -120,13 +129,54 @@ public class Repository<ObjType, IdType> {
         }
     }
 
+    /**
+     * Load elements in an embedded collection. For example, "positions" in an "invoice",
+     * or "items" in a "shoppingCart". We have no easy way to identify the class of the
+     * objects we want to load, so we _require_ that the class-name be identical to tableName.
+     * The class of the elements we load must provide a constructor without parameters.
+     * We do not allow recursion, i.e., embedded-collections within embedded-collections
+     * @param collection The collection where we will store the objects loaded
+     * @param packageName The name of the package where the class will be found
+     * @param tableName The name of the database table _and_ the name of the class
+     * @param joinColumn The column used to select the objects from the database table
+     * @param IdValue The id value that the objects must have on the joinColumn
+     */
+    private void loadElementCollection(Collection collection, String packageName, String tableName, String joinColumn, IdType IdValue) {
+        String sql = "SELECT * FROM " + tableName + " WHERE " + joinColumn + " = " + IdValue;
+        try (
+                PreparedStatement stmt = db.getConnection().prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();
+        ) {
+            while (rs.next()) { // Move to next record
+                // Construct new object
+                String className = packageName + "." + tableName;
+                Class<?> c = Class.forName(className);
+                Constructor constructor = c.getConstructor();
+                ObjType newObj = (ObjType) constructor.newInstance();
+
+                for (Field f : c.getDeclaredFields()) {
+                    f.setAccessible(true);
+                    if (f.getAnnotation(Column.class) != null) { // for all annotated fields
+                        String fieldName = f.getName();
+                        Class<?> fieldType = f.getType();
+                        Object fieldValue = getFieldValue(rs, fieldType, fieldName);
+                        f.set(newObj, fieldValue);
+                    }
+                }
+                collection.add(newObj);
+            }
+        } catch (Exception e) {
+            throw new OrmException(e.getMessage());
+        }
+    }
+
     // Find an object in the database with the same ID as this object
     public ObjType findOne(ObjType obj) {
         try {
             Class<?> c = obj.getClass();
             String tableName = getTableName(c);
 
-            // Find the ID field, so we know which object to delete
+            // Find the ID field, so we know which object to fetch
             String IdFieldName = null;
             IdType IdValue = null;
             for (Field f : c.getDeclaredFields()) {
@@ -153,7 +203,7 @@ public class Repository<ObjType, IdType> {
                                 String fieldName = f.getName();
                                 Class<?> fieldType = f.getType();
                                 Object fieldValue = getFieldValue(rs, fieldType, fieldName);
-                                f.set(newObj, fieldValue); // Really should call setter-method
+                                f.set(newObj, fieldValue);
                             }
                         }
                         return newObj;

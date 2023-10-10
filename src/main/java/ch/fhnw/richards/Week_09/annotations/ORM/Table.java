@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.TYPE, ElementType.FIELD}) // Applies to classes and attributes
+@Target({ElementType.TYPE, ElementType.FIELD}) // Applies to classes
 @Retention(RetentionPolicy.RUNTIME) // Annotation will be processed at runtime
 public @interface Table {
     String name() default "";

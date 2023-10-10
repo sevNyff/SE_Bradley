@@ -1,26 +1,34 @@
 package ch.fhnw.richards.Week_09.annotations.ORMexample.model;
 
-import ch.fhnw.richards.Week_09.annotations.ORM.Column;
-import ch.fhnw.richards.Week_09.annotations.ORM.Entity;
-import ch.fhnw.richards.Week_09.annotations.ORM.ID;
-import ch.fhnw.richards.Week_09.annotations.ORM.Table;
+import ch.fhnw.richards.Week_09.annotations.ORM.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// LineItems are in a many-to-one relationship with invoices. JPA does not allow
+// us to represent this with just an ID. We must have an attribute that contains
+// an invoice. The reason is probably that there is no other way to know what
+// class LineItem is related to - by declaring an attribute, we can access the
+// type of that attribute at runtime.
+//
+// Therefore, we use an alternate method here: We declare lineItems to be an
+// ElementCollection. The usage in full JPA is more complex that shown here,
+// but the idea is the same: load items from the named table, selecting on
+// the JoinColumn we name.
 @Entity
 @Table(name="Invoice")
 public class Invoice {
-    @ch.fhnw.richards.Week_09.annotations.ORM.ID
+    @ID
     @Column(name="ID")
     private final Integer ID;
     @Column(name="date")
     private LocalDate date;
     @Column(name="customerID")
     private Integer customerID;
+    @ElementCollection
+    @CollectionTable(name="LineItem", joinColumn="invoiceID")
     private List<LineItem> lineItems = new ArrayList<>();
-    private Integer total;
 
     public Invoice(Integer ID) {
         this.ID = ID;
@@ -32,29 +40,16 @@ public class Invoice {
         this.customerID = customerID;
     }
 
-
     public void addLineItem(Integer productID, Integer quantity, Integer salesPrice) {
         lineItems.add(new LineItem(this.ID, productID, quantity, salesPrice));
-        updateTotal();
     }
 
     public void addLineItemFromProduct(Product product, Integer quantity) {
         lineItems.add(new LineItem(this.ID, product.getID(), quantity, product.getPrice()));
-        updateTotal();
     }
 
     public void removeLineItem(LineItem li) {
         lineItems.removeIf(lineItem -> lineItem.equals(li));
-        updateTotal();
-    }
-
-    private void updateTotal() {
-        int total = 0;
-        for (LineItem li : lineItems) {
-            int subtotal = li.getQuantity() * li.getSalesPrice();
-            total += subtotal;
-        }
-        this.total = total;
     }
 
     public ArrayList<LineItem> getLineItems() {
@@ -81,7 +76,15 @@ public class Invoice {
         this.customerID = customerID;
     }
 
+    /**
+     * We do not store the total; instead, we calculate it on demand.
+     */
     public Integer getTotal() {
+        int total = 0;
+        for (LineItem li : lineItems) {
+            int subtotal = li.getQuantity() * li.getSalesPrice();
+            total += subtotal;
+        }
         return total;
     }
 }

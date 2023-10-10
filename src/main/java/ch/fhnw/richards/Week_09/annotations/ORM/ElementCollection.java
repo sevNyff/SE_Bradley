@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.TYPE) // Applies to classes
+@Target(ElementType.FIELD) // Applies to attributes
 @Retention(RetentionPolicy.RUNTIME) // Annotation will be processed at runtime
-public @interface Entity {
+public @interface ElementCollection {
 }

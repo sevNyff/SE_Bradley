@@ -3,6 +3,9 @@ package ch.fhnw.richards.Week_09.annotations.ORMexample;
 import ch.fhnw.richards.Week_09.annotations.ORM.Repository;
 import ch.fhnw.richards.Week_09.annotations.ORMexample.model.Product;
 
+/**
+ * Just a simple demo, to show that our code can update values in the database.
+ */
 public class MainTest {
     public static void main(String[] args) {
         Repository<Product, Integer> rep = new Repository<>(); // Note: first use also creates sample database

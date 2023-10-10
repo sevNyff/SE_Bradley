@@ -12,7 +12,6 @@ public class Invoice {
     private LocalDate date;
     private Integer customerID;
     private List<LineItem> lineItems = new ArrayList<>();
-    private Integer total;
 
     public Invoice(Integer ID) {
         this.ID = ID;
@@ -46,7 +45,6 @@ public class Invoice {
             while (rs.next()) {
                 Invoice invoice = new Invoice(rs);
                 invoice.lineItems = LineItem.getLineItems(db, invoice.ID);
-                invoice.updateTotal();
                 invoices.add(invoice);
             }
 
@@ -58,26 +56,14 @@ public class Invoice {
 
     public void addLineItem(Integer productID, Integer quantity, Integer salesPrice) {
         lineItems.add(new LineItem(this.ID, productID, quantity, salesPrice));
-        updateTotal();
     }
 
     public void addLineItemFromProduct(Product product, Integer quantity) {
         lineItems.add(new LineItem(this.ID, product.getID(), quantity, product.getPrice()));
-        updateTotal();
     }
 
     public void removeLineItem(LineItem li) {
         lineItems.removeIf(lineItem -> lineItem.equals(li));
-        updateTotal();
-    }
-
-    private void updateTotal() {
-        int total = 0;
-        for (LineItem li : lineItems) {
-            int subtotal = li.getQuantity() * li.getSalesPrice();
-            total += subtotal;
-        }
-        this.total = total;
     }
 
     public ArrayList<LineItem> getLineItems() {
@@ -104,7 +90,15 @@ public class Invoice {
         this.customerID = customerID;
     }
 
+    /**
+     * We do not store the total; instead, we calculate it on demand.
+     */
     public Integer getTotal() {
+        int total = 0;
+        for (LineItem li : lineItems) {
+            int subtotal = li.getQuantity() * li.getSalesPrice();
+            total += subtotal;
+        }
         return total;
     }
 }

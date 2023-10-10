@@ -10,14 +10,17 @@ import ch.fhnw.richards.Week_09.annotations.ORM.Table;
 public class LineItem {
     @ID
     @Column(name="invoiceID")
-    private final Integer invoiceID;
+    private Integer invoiceID;
     @Column(name="productID")
-    private final Integer productID;
+    private Integer productID;
     @Column(name="quantity")
     private Integer quantity;
     @Column(name="salesPrice")
     private Integer salesPrice;
 
+    public LineItem() {
+
+    }
     public LineItem(Integer invoiceID, Integer productID) {
         this.invoiceID = invoiceID;
         this.productID = productID;
@@ -29,6 +32,9 @@ public class LineItem {
         this.salesPrice = salesPrice;
     }
 
+    public void setInvoiceID(Integer invoiceID) { this.invoiceID = invoiceID; }
+
+    public void setProductID(Integer productID) { this.productID = productID; }
     public Integer getInvoiceID() {
         return invoiceID;
     }
