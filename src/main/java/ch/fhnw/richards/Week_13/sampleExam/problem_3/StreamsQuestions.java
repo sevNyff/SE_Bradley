@@ -9,12 +9,16 @@ import java.util.stream.Collectors;
 public class StreamsQuestions {
     public static void main(String[] args) {
         List<Invoice> invoices = getData();
+        System.out.println(example(invoices));
+
         System.out.println(part_A(invoices, 2023));
 
         for (Integer i : part_B(invoices)) System.out.print(i + " ");
         System.out.println();
+    }
 
-//        System.out.println(part_B(invoices, 2023));
+    private static Long example(List<Invoice> invoices) {
+        return invoices.stream().count();
     }
 
     private static Integer part_A(List<Invoice> invoices, int year) {
