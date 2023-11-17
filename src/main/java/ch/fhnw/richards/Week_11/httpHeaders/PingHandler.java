@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 /**
  * This class represents a client, from the perspective of the server. We
@@ -29,9 +30,9 @@ public class PingHandler implements HttpHandler {
             if (requestMethod.equals("GET")) {
                 statusCode = 200;
                 Headers headers = httpExchange.getRequestHeaders();
-                for (String key : headers.keySet()) {
-                    jsonResponse.put(key, headers.get(key));
-                }
+                List<String> languages = headers.get("Accept-language");
+                // Assume there is only one header, or anyway, only show the first
+                jsonResponse.put("Locale list", languages.get(0));
             } else { // Unsupported request type
                 statusCode = 418; // Can't make coffee in a teapot
                 jsonResponse.put("Error", "Invalid HTTP request method");
