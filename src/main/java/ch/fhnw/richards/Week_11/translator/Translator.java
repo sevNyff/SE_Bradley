@@ -9,19 +9,16 @@ public class Translator {
     private ResourceBundle resourceBundle;
 
     public Translator(String localeString) {
-        // Can we find the language in our supported locales?
-        // If not, use VM default locale
         Locale locale = Locale.forLanguageTag(localeString);
 
-        // Load the resource strings - (here, we hard-code the file-name)
-        //resourceBundle = ResourceBundle.getBundle(this.getClass().getName(), locale);
+        // Load the resource strings using the full path to the bundle
         resourceBundle = ResourceBundle.getBundle("ch.fhnw.richards.Week_11.translator.resources", locale);
         Locale.setDefault(locale); // Change VM default (for dialogs, etc.)
         currentLocale = locale;
     }
 
     /**
-     * Public method to get string resources, default to "--" *
+     * Public method to get string resources, default to "--"
      */
     public String getString(String key) {
         try {

@@ -21,7 +21,8 @@ public class Controller {
     private void updateLanguage(String localeString) {
         Locale locale = Locale.forLanguageTag(localeString);
         Locale.setDefault(locale);
-        view.t = new Translator(localeString);
+        view.preferences.put("locale", localeString);
+        view.translator = new Translator(localeString);
         view.updateTexts();
     }
 }

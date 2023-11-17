@@ -18,6 +18,7 @@ module ch.fhnw.richards {
     requires jdk.httpserver;
     requires java.net.http;
     requires java.sql;
+    requires java.prefs;
 
     // Necessary for any JavaFX programs that should be directly runnable
     exports ch.fhnw.richards.demo;

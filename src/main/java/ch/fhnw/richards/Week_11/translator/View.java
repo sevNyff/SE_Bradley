@@ -8,12 +8,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.prefs.Preferences;
+
 public class View {
     Stage stage;
     Model model;
+    Preferences preferences;
 
-    // Current translator to use; default to US English
-    Translator t = new Translator("en-US");
+    // Initial translator to use; default to US English
+    Translator translator;
 
     // UI components
     MenuBar menus = new MenuBar();
@@ -23,9 +26,11 @@ public class View {
 
     Label lblText = new Label();
 
-    public View(Stage stage, Model model) {
+    public View(Stage stage, Model model, Preferences preferences) {
         this.stage = stage;
         this.model = model;
+        this.preferences = preferences;
+        this.translator = new Translator(preferences.get("locale", "en-US"));
 
         menus.getMenus().add(menuLanguage);
         menuLanguage.getItems().addAll(menuLanguageEN, menuLanguageDE);
@@ -49,14 +54,14 @@ public class View {
      */
     protected void updateTexts() {
         // The menu entries
-        menuLanguage.setText(t.getString("program.menu.language"));
-        menuLanguageEN.setText(t.getString("program.menu.language.english"));
-        menuLanguageDE.setText(t.getString("program.menu.language.german"));
+        menuLanguage.setText(translator.getString("program.menu.language"));
+        menuLanguageEN.setText(translator.getString("program.menu.language.english"));
+        menuLanguageDE.setText(translator.getString("program.menu.language.german"));
 
         // Other controls
-        lblText.setText(t.getString("label.text"));
+        lblText.setText(translator.getString("label.text"));
 
         // Window title
-        stage.setTitle(t.getString("program.name"));
+        stage.setTitle(translator.getString("program.name"));
     }
 }
